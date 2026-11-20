@@ -44,4 +44,61 @@ function changePage(p){document.querySelectorAll('.page').forEach(x=>x.classList
 document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>changePage(b.dataset.page));document.querySelectorAll('[data-layer]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-layer]').forEach(x=>x.classList.toggle('active',x===b));setRadar(b.dataset.layer)});
 $('region').onchange=()=>{const c=coords[$('region').value];if(c){location=c;loadWeather(...c);if(map){map.setView(c,7);marker.setLatLng(c)}}loadJMA()};$('refresh').onclick=()=>{loadWeather(...location);loadJMA()};$('locate').onclick=()=>{if(!navigator.geolocation){alert('このブラウザーでは位置情報を利用できません');return}navigator.geolocation.getCurrentPosition(p=>{location=[p.coords.latitude,p.coords.longitude];loadWeather(...location);if(map){map.setView(location,9);marker.setLatLng(location).bindPopup('現在地').openPopup()}},()=>alert('位置情報を取得できません。ブラウザーの位置情報許可を確認してください。'),{enableHighAccuracy:false,timeout:12000})};$('maploc').onclick=()=>{if(map)map.setView(location,8)};$('fullscreen').onclick=()=>document.fullscreenElement?document.exitFullscreen?.():document.documentElement.requestFullscreen?.();initMap();loadWeather();loadJMA();setInterval(()=>{loadWeather(...location);loadJMA()},30*60*1000);
 </script>
+
+<script>
+/* Direct JMA public-feed integration. No external page embedding. */
+(function(){
+ const FEEDS=[
+  {key:"eqvol",label:"地震・津波・火山",url:"https://www.data.jma.go.jp/developer/xml/feed/eqvol.xml"},
+  {key:"extra",label:"警報・注意報・台風など",url:"https://www.data.jma.go.jp/developer/xml/feed/extra.xml"}
+ ];
+ const esc2=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+ const localTime=s=>{const d=new Date(s);return isNaN(+d)?"時刻不明":d.toLocaleString("ja-JP")};
+ function tagText(doc,names){for(const n of names){const e=doc.getElementsByTagNameNS("*",n)[0];if(e&&e.textContent.trim())return e.textContent.trim()}return ""}
+ function detailBits(doc){
+  const out=[];
+  const title=tagText(doc,["Title"]);if(title)out.push(["情報名",title]);
+  const headline=tagText(doc,["Text"]);if(headline)out.push(["概要",headline]);
+  const target=["Name","Intensity","MaxInt","AreaName","CityName","ArrivalTime","Kind","Condition","Magnitude","Hypocenter","Depth","Magnitude"];
+  const seen=new Set();
+  for(const n of target){for(const el of Array.from(doc.getElementsByTagNameNS("*",n)).slice(0,16)){const v=(el.textContent||"").trim();if(!v||v.length>180)continue;const key=n+":"+v;if(seen.has(key))continue;seen.add(key);out.push([n,v])}}
+  return out.slice(0,18);
+ }
+ async function getEntries(feed){
+  const r=await fetch(feed.url,{cache:"no-store"});if(!r.ok)throw Error("HTTP "+r.status);
+  const xml=new DOMParser().parseFromString(await r.text(),"application/xml");
+  if(xml.querySelector("parsererror"))throw Error("XML解析エラー");
+  return Array.from(xml.getElementsByTagNameNS("*","entry")).slice(0,8).map(e=>{
+   const title=e.getElementsByTagNameNS("*","title")[0]?.textContent?.trim()||"気象庁発表";
+   const updated=e.getElementsByTagNameNS("*","updated")[0]?.textContent||e.getElementsByTagNameNS("*","published")[0]?.textContent||"";
+   const link=Array.from(e.getElementsByTagNameNS("*","link")).find(x=>x.getAttribute("type")==="application/xml"||x.getAttribute("rel")==="alternate")||e.getElementsByTagNameNS("*","link")[0];
+   return {title,updated,href:link?.getAttribute("href")||"",feed:feed.label};
+  });
+ }
+ async function enrich(item){
+  if(!item.href)return {...item,bits:[]};
+  try{const r=await fetch(item.href,{cache:"no-store"});if(!r.ok)throw Error("detail HTTP "+r.status);const doc=new DOMParser().parseFromString(await r.text(),"application/xml");return {...item,bits:detailBits(doc)}}catch(e){return {...item,bits:[],detailError:e.message}}
+ }
+ function card(item){
+  const bits=item.bits?.map(([k,v])=>'<div class="jma-bit"><b>'+esc2(k)+'</b><span>'+esc2(v)+'</span></div>').join("")||'<div class="jma-muted">'+(item.detailError?"詳細電文を取得できませんでした":"追加詳細なし")+'</div>';
+  return '<article class="jma-event"><div class="jma-event-head"><strong>'+esc2(item.title)+'</strong><time>'+esc2(localTime(item.updated))+'</time></div><div class="jma-muted">'+esc2(item.feed)+'</div>'+bits+'</article>';
+ }
+ const css='<style>.jma-live-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.jma-live-box{background:#0a1c2a;border:1px solid #29485b;border-radius:8px;padding:12px;min-width:0}.jma-event{padding:11px 0;border-bottom:1px solid #244153}.jma-event:last-child{border:0}.jma-event-head{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}.jma-event-head time,.jma-muted{font-size:11px;color:#9ab1c2}.jma-bit{display:flex;gap:9px;margin-top:5px;font-size:12px}.jma-bit b{color:#70d7e9;min-width:62px}.jma-bit span{overflow-wrap:anywhere}.jma-state{font-size:11px;color:#70ddb0;margin:5px 0}.jma-empty{padding:12px;color:#ffd16a;font-size:12px}.jma-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.jma-info{background:#102b3d;border:1px solid #29485b;border-radius:7px;padding:11px}.jma-info b{display:block}.jma-info small{color:#9ab1c2}.jma-layer-note{color:#9ab1c2;font-size:12px;padding:12px}@media(max-width:700px){.jma-live-grid{grid-template-columns:1fr}.jma-bit{flex-direction:column;gap:1px}}</style>';
+ document.head.insertAdjacentHTML("beforeend",css);
+ const disaster=document.getElementById("disaster");
+ if(disaster)disaster.innerHTML='<div class="grid"><article class="card span12"><div class="hd">LIVE DISASTER FEED / 気象庁 防災情報XML</div><div class="body"><div class="jma-state" id="jma-feed-status">● 気象庁公開フィードへ接続中</div><div class="jma-live-grid"><section class="jma-live-box"><b>地震・津波・火山</b><div id="jma-eqvol" class="loading">取得中…</div></section><section class="jma-live-box"><b>警報・注意報・台風など</b><div id="jma-extra" class="loading">取得中…</div></section></div><p class="jma-muted">出典：気象庁防災情報XML PULL型公開フィード。発表内容を取得してこの画面内に表示しています。取得できない場合はブラウザーのCORS制限または配信側の一時停止の可能性があります。</p></div></article><article class="card span12"><div class="hd">ADDITIONAL PUBLIC DATA / その他の防災情報</div><div class="body"><div class="jma-links"><div class="jma-info"><b>避難情報・避難所</b><small>自治体の公開データに地域差があり、全国統一APIとしての取得は未実装です。</small></div><div class="jma-info"><b>停電情報</b><small>電力会社ごとに公開方式が異なるため、全国一括の無料データ取得は未実装です。</small></div><div class="jma-info"><b>電力需給予報</b><small>広域機関・各電力会社の公開データの形式調査と個別連携が必要です。</small></div><div class="jma-info"><b>雷・黄砂・積雪</b><small>気象庁等の観測・予測データを種類ごとに追加取得する予定です。未取得値は表示しません。</small></div></div></div></article></div>';
+ const typhoon=document.getElementById("typhoon");
+ if(typhoon)typhoon.innerHTML='<div class="card"><div class="hd">TROPICAL CYCLONE / 台風関連の気象庁発表</div><div class="body"><div class="jma-state">● 防災情報XMLの随時フィードから台風関連発表を抽出</div><div id="jma-typhoon" class="loading">取得中…</div><p class="jma-muted">台風の中心位置・予報円などの専用数値データは、公開フィードの電文仕様に合わせた専用パーサーを追加して表示します。現段階では発表タイトルと電文の内容を表示します。</p></div></div>';
+ const radar=document.getElementById("radar");
+ if(radar){const tiles=radar.querySelector(".tiles");if(tiles)tiles.innerHTML='<div class="jma-info"><b>雨雲・雨雪</b><small>RainViewerの公開降水タイルを地図上に表示中。気象庁レーダーは直接タイル化できる公開仕様を確認後に追加。</small></div><div class="jma-info"><b>風</b><small>Open-Meteoの地点別風速・風向・予報を取得。面レーダーは未実装。</small></div><div class="jma-info"><b>積雪</b><small>Open-Meteoの降雪予報データを取得。全国積雪観測レイヤーは未実装。</small></div><div class="jma-info"><b>雷・黄砂・ゲリラ雷雨</b><small>全国を覆う無料の統一リアルタイムAPIを確認できていないため、未取得の情報は表示しません。</small></div>';}
+ async function refreshFeeds(){
+  const status=document.getElementById("jma-feed-status");if(status)status.textContent="● 気象庁XMLを取得中…";
+  const all=[];
+  for(const f of FEEDS){const target=document.getElementById("jma-"+f.key);try{const entries=await getEntries(f);const detailed=await Promise.all(entries.slice(0,5).map(enrich));all.push(...detailed);if(target)target.innerHTML=detailed.length?detailed.map(card).join(""):'<div class="jma-empty">現在、掲載中の電文はありません。</div>';}catch(e){if(target)target.innerHTML='<div class="jma-empty">直接取得できませんでした：'+esc2(e.message)+'。ブラウザーのCORS制限の可能性があります。</div>';}}
+  const ty=document.getElementById("jma-typhoon");if(ty){const hits=all.filter(x=>/台風|熱帯低気圧|暴風|大雨|暴風雪/.test(x.title));ty.innerHTML=hits.length?hits.map(card).join(""):'<div class="jma-empty">現在の取得範囲に台風関連の発表は見つかりませんでした。これは「台風なし」の確定判定ではありません。</div>';}
+  if(status)status.textContent="● 取得処理終了 · "+new Date().toLocaleTimeString("ja-JP");
+ }
+ refreshFeeds();setInterval(refreshFeeds,3*60*1000);
+})();
+</script>
 </body></html>
