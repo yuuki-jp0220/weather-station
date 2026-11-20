@@ -26,7 +26,21 @@
 <section id="forecast" class="page"><div class="grid"><article class="card span12"><div class="hd">REGIONAL FORECAST / 地域別予報</div><div class="body" id="regional">上部の都道府県を選択すると予報を切り替えます。</div></article><article class="card span12"><div class="hd">FORECAST SOURCES / 予報データ</div><div class="body">気象庁の府県予報とOpen-Meteoの数値予報を併記します。数値予報モデルは観測値ではありません。<p><a class="source" href="https://www.jma.go.jp/bosai/forecast/" target="_blank" rel="noopener">気象庁 全国予報 ↗</a>　<a class="source" href="https://open-meteo.com/en/docs" target="_blank" rel="noopener">Open-Meteo API ↗</a></p></div></article></div></section>
 <section id="typhoon" class="page"><div class="card"><div class="hd">TROPICAL CYCLONE CENTER / 台風情報</div><div class="body"><div style="font-size:32px">🌀</div><b>台風の位置・進路予報・暴風域</b><p class="muted">最新の台風情報は気象庁の公式発表を表示します。台風が発生していない場合も、最新情報を確認できます。</p><a class="source" href="https://www.jma.go.jp/bosai/typhoon/" target="_blank" rel="noopener">気象庁 台風情報を開く ↗</a><div class="alert" style="margin-top:14px">外部サイトの埋め込みは使用しません。台風関連の発表は、このページ内の気象庁公式XMLフィードから取得して表示します。進路・中心位置の数値表示は専用データの解析対応後に追加します。</div></div></div></section>
 <section id="disaster" class="page"><div class="grid"><article class="card span12"><div class="hd">DISASTER & WARNING CENTER / 防災・災害情報</div><div class="body"><div class="alert">この画面は情報確認用です。緊急時は自治体・気象庁・消防などの公式発表と避難指示に従ってください。</div><div class="tiles"><a class="tile" href="https://www.jma.go.jp/bosai/warning/" target="_blank" rel="noopener"><b>⚠ 警報・注意報</b><small>気象庁</small></a><a class="tile" href="https://www.jma.go.jp/bosai/quake/" target="_blank" rel="noopener"><b>地震情報</b><small>震度・震源・津波</small></a><a class="tile" href="https://www.jma.go.jp/bosai/tsunami/" target="_blank" rel="noopener"><b>🌊 津波情報</b><small>気象庁</small></a><a class="tile" href="https://www.jma.go.jp/bosai/volcano/" target="_blank" rel="noopener"><b>🌋 火山情報</b><small>気象庁</small></a><a class="tile" href="https://disaportal.gsi.go.jp/" target="_blank" rel="noopener"><b>避難・ハザードマップ</b><small>国土地理院 防災ポータル</small></a><a class="tile" href="https://www.bousai.go.jp/" target="_blank" rel="noopener"><b>防災・避難情報</b><small>内閣府 防災情報</small></a><a class="tile" href="https://www.jma.go.jp/bosai/amedas/" target="_blank" rel="noopener"><b>AMeDAS観測</b><small>気温・雨量・風</small></a><a class="tile" href="https://www.jma.go.jp/bosai/" target="_blank" rel="noopener"><b>気象庁 防災情報</b><small>公式ポータル</small></a></div></div></article><article class="card span12"><div class="hd">JMA DISASTER XML / 防災情報電文</div><div class="body muted">気象庁は警報・注意報、地震・火山などの防災情報XMLフィードを公開しています。ブラウザーからの直接取得は通信制限（CORS）等で失敗する場合があるため、公式フィードを開くリンクを用意しています。<p><a class="source" href="https://xml.kishou.go.jp/xmlpull.html" target="_blank" rel="noopener">気象庁 防災情報XML（PULL型） ↗</a></p></div></article></div></section>
-<section id="lifeline" class="page"><div class="grid"><article class="card span12"><div class="hd">LIFELINE MONITOR / ライフライン情報</div><div class="body"><div class="tiles"><a class="tile" href="https://teideninfo.tepco.co.jp/" target="_blank" rel="noopener"><b>🔌 東京電力 停電情報</b><small>停電地域・復旧情報</small></a><a class="tile" href="https://www.kansai-td.co.jp/teiden-info/" target="_blank" rel="noopener"><b>関西電力 停電情報</b><small>停電・復旧情報</small></a><a class="tile" href="https://www.occto.or.jp/" target="_blank" rel="noopener"><b>⚡ 電力需給・広域機関</b><small>電力広域的運営推進機関</small></a><a class="tile" href="https://www.enecho.meti.go.jp/category/electricity_and_gas/electric/" target="_blank" rel="noopener"><b>電力需給情報</b><small>資源エネルギー庁</small></a></div><p class="muted">停電情報・電力需給は電力会社や地域ごとに公開形式が異なります。現在は公式情報への案内です。全国一括の無料APIがないため、未確認の停電状況をこの画面で推測表示しません。</p></div></article></div></section>
+<section id="lifeline" class="page"><div class="grid">
+<article class="card span12"><div class="hd">TEPCO OUTAGE MONITOR / 東京電力 停電情報 <span class="pill">OFFICIAL SOURCE</span></div><div class="body">
+<div class="stats">
+<div class="stat"><small>対象エリア</small><strong>茨城県</strong></div>
+<div class="stat"><small>提供元</small><strong>東京電力PG</strong></div>
+<div class="stat"><small>データ形式</small><strong>公開HTML</strong></div>
+<div class="stat"><small>JSON/XML API</small><strong>未確認</strong></div>
+</div>
+<div id="tepco-outage-status" class="alert" style="margin-top:12px">公式データの取得方式を確認してください。「接続テスト」で、GitHub Pagesのブラウザーから公式ページへ直接アクセスできるか確認します。</div>
+<div id="tepco-outage-result" class="muted">停電件数・停電地域は、公式の構造化データ取得先が確認できるまで表示しません。未取得を「停電なし」とは扱いません。</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button id="tepco-outage-test">公式データ接続テスト</button><a class="source" href="https://teideninfo.tepco.co.jp/flash/08000000000.html" target="_blank" rel="noopener">東京電力 茨城県の停電情報 ↗</a></div>
+<p class="muted" style="font-size:11px;margin-top:12px">注意：東京電力の公式停電情報は地図・地域検索ページとして公開されています。現時点で一般利用可能な公式JSON/XML APIの仕様は確認できていません。低圧・引込線などの停電が表示されない場合や、掲載まで時間がかかる場合があります。</p>
+</div></article>
+<article class="card span12"><div class="hd">OTHER POWER COMPANIES / その他の電力会社</div><div class="body"><div class="tiles"><a class="tile" href="https://www.tdgc.jp/areainfo/teiden/" target="_blank" rel="noopener"><b>全国の停電情報</b><small>送配電網協議会・各社公式窓口一覧</small></a><a class="tile" href="https://www.tepco.co.jp/pg/teiden-fukkyu/index-j.html" target="_blank" rel="noopener"><b>東京電力 停電復旧情報</b><small>復旧見込み・進捗情報</small></a><a class="tile" href="https://www.tepco.co.jp/forecast/" target="_blank" rel="noopener"><b>東京電力 でんき予報</b><small>電力需給情報</small></a></div></div></article>
+</div></section>
 <section id="power" class="page"><div class="grid">
 <article class="card span12"><div class="hd">POWER SUPPLY & DEMAND / 電力需給監視 <span class="pill">公式データ表示</span></div><div class="body">
 <div class="alert">茨城県は東京エリアです。東京電力パワーグリッドの公式「でんき予報」を表示します。</div>
@@ -93,9 +107,31 @@ async function loadJMA(){
 }
 async function initMap(){if(!window.L)return;map=L.map('map').setView(location,5);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'© OpenStreetMap'}).addTo(map);marker=L.marker(location).addTo(map).bindPopup('選択地点');await setRadar('rain');}
 async function setRadar(type){currentLayer=type;if(!map)return;if(radarLayer){map.removeLayer(radarLayer);radarLayer=null}if(type==='jma'){$('mapnote').textContent='気象庁の公式降水ナウキャストを別ページで開いてください。';window.open('https://www.jma.go.jp/bosai/nowc/','_blank','noopener');return}if(type==='wind'){$('mapnote').textContent='風の数値予報は地点ごとの予報パネルに表示します。風の公式分布図は気象庁の情報をご確認ください。';return}try{const r=await fetch('https://api.rainviewer.com/public/weather-maps.json');if(!r.ok)throw Error('Radar feed unavailable');const j=await r.json();const frames=[...(j.radar?.past||[]),...(j.radar?.nowcast||[])];const f=frames[frames.length-1];if(!f)throw Error('No radar frame');radarLayer=L.tileLayer(j.host+f.path+'/256/{z}/{x}/{y}/2/1_1.png',{opacity:.65,tileSize:256,attribution:'Radar © RainViewer',maxZoom:7});radarLayer.addTo(map);$('mapnote').textContent='RainViewer 世界の降水レーダー · '+new Date(f.time*1000).toLocaleString('ja-JP')+' · 地図の表示範囲を移動・拡大できます。'}catch(e){$('mapnote').textContent='レーダータイルを取得できませんでした。気象庁の公式降水ナウキャストを利用してください。';}}
+async function testTepcoOutageConnection(){
+ const status=$('tepco-outage-status'),result=$('tepco-outage-result'),button=$('tepco-outage-test');
+ if(!status||!result||!button)return;
+ button.disabled=true;button.textContent='接続確認中…';
+ status.textContent='● 東京電力公式ページへ直接接続しています…';
+ result.textContent='公式ページの応答とブラウザーのアクセス制限を確認中です。';
+ try{
+  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),10000);
+  let response;
+  try{response=await fetch('https://teideninfo.tepco.co.jp/flash/08000000000.html',{cache:'no-store',signal:controller.signal,mode:'cors'});}
+  finally{clearTimeout(timer);}
+  if(!response.ok)throw Error('HTTP '+response.status);
+  const html=await response.text();
+  const doc=new DOMParser().parseFromString(html,'text/html');
+  const text=(doc.body?.innerText||'').replace(/\\s+/g,' ').trim();
+  status.textContent='● 公式ページへの通信成功';
+  result.textContent='東京電力のページ応答を受信しました（約'+Math.round(html.length/1024)+'KB）。ただし、ページ応答を受信できても、停電件数などの構造化データを取得できたことにはなりません。公式ページ内に公開JSON/XMLの仕様を確認できないため、数値はまだ表示していません。'+(text.includes('茨城県')?' 茨城県ページの本文も確認できました。':'');
+ }catch(e){
+  status.textContent='● ブラウザーからの直接取得不可';
+  result.textContent=(e.name==='AbortError'?'接続がタイムアウトしました。':'公式ページを直接取得できませんでした（'+e.message+'）。')+' GitHub PagesからのCORS制限などが考えられます。現時点では停電なしとは判定できません。公式ページを別画面で確認してください。';
+ }finally{button.disabled=false;button.textContent='もう一度テスト';}
+}
 function changePage(p){document.querySelectorAll('.page').forEach(x=>x.classList.toggle('active',x.id===p));document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===p));if(p==='radar'&&map)setTimeout(()=>map.invalidateSize(),100)}
 document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>changePage(b.dataset.page));document.querySelectorAll('[data-layer]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-layer]').forEach(x=>x.classList.toggle('active',x===b));setRadar(b.dataset.layer)});
-$('region').onchange=()=>{const c=coords[$('region').value];if(c){location=c;loadWeather(...c);if(map){map.setView(c,7);marker.setLatLng(c)}}loadJMA()};$('refresh').onclick=()=>{loadWeather(...location);loadJMA()};$('locate').onclick=()=>{if(!navigator.geolocation){alert('このブラウザーでは位置情報を利用できません');return}navigator.geolocation.getCurrentPosition(p=>{location=[p.coords.latitude,p.coords.longitude];loadWeather(...location);if(map){map.setView(location,9);marker.setLatLng(location).bindPopup('現在地').openPopup()}},()=>alert('位置情報を取得できません。ブラウザーの位置情報許可を確認してください。'),{enableHighAccuracy:false,timeout:12000})};$('maploc').onclick=()=>{if(map)map.setView(location,8)};$('fullscreen').onclick=()=>document.fullscreenElement?document.exitFullscreen?.():document.documentElement.requestFullscreen?.();initMap();loadWeather();loadJMA();setInterval(()=>{loadWeather(...location);loadJMA()},30*60*1000);
+$('tepco-outage-test')?.addEventListener('click',testTepcoOutageConnection);$('region').onchange=()=>{const c=coords[$('region').value];if(c){location=c;loadWeather(...c);if(map){map.setView(c,7);marker.setLatLng(c)}}loadJMA()};$('refresh').onclick=()=>{loadWeather(...location);loadJMA()};$('locate').onclick=()=>{if(!navigator.geolocation){alert('このブラウザーでは位置情報を利用できません');return}navigator.geolocation.getCurrentPosition(p=>{location=[p.coords.latitude,p.coords.longitude];loadWeather(...location);if(map){map.setView(location,9);marker.setLatLng(location).bindPopup('現在地').openPopup()}},()=>alert('位置情報を取得できません。ブラウザーの位置情報許可を確認してください。'),{enableHighAccuracy:false,timeout:12000})};$('maploc').onclick=()=>{if(map)map.setView(location,8)};$('fullscreen').onclick=()=>document.fullscreenElement?document.exitFullscreen?.():document.documentElement.requestFullscreen?.();initMap();loadWeather();loadJMA();setInterval(()=>{loadWeather(...location);loadJMA()},30*60*1000);
 </script>
 
 <script>
