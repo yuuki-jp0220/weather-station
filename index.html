@@ -167,7 +167,7 @@ async function loadOutageData(){
   if(!item)throw Error('選択した会社のデータがありません');
   if(item.status==='ok'&&Number.isFinite(Number(item.count))){
    $('outage-live-state').textContent='取得成功';
-   $('outage-provider-result').textContent='公式ページから確認した停電件数：'+Number(item.count).toLocaleString('ja-JP')+'（'+(item.count_label||'件')+'）';
+   $('outage-provider-result').textContent='公式ページから確認した停電件数：'+Number(item.count).toLocaleString('ja-JP')+'件';
   }else if(item.status==='approximate'){
    $('outage-live-state').textContent='概数のみ';
    $('outage-provider-result').textContent='公式ページの表示：'+(item.count_label||'概数')+'。正確な件数ではないため、全国合計には加算していません。';
