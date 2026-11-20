@@ -1,0 +1,100 @@
+{
+  "updated_at": null,
+  "total_count": null,
+  "total_status": "not_run",
+  "successful_companies": 0,
+  "company_count": 10,
+  "note": "自動取得の初回実行前です。未取得は停電0件を意味しません。",
+  "companies": [
+    {
+      "code": "hepco",
+      "name": "北海道電力ネットワーク",
+      "url": "https://teiden-info.hepco.co.jp/",
+      "count": null,
+      "count_label": null,
+      "status": "error",
+      "error": "初回の自動取得待ち"
+    },
+    {
+      "code": "tohoku",
+      "name": "東北電力ネットワーク",
+      "url": "https://nw.tohoku-epco.co.jp/teideninfo/evhindex.html",
+      "count": null,
+      "count_label": null,
+      "status": "error",
+      "error": "初回の自動取得待ち"
+    },
+    {
+      "code": "tepco",
+      "name": "東京電力パワーグリッド",
+      "url": "https://teideninfo.tepco.co.jp/",
+      "count": null,
+      "count_label": null,
+      "status": "error",
+      "error": "初回の自動取得待ち"
+    },
+    {
+      "code": "chuden",
+      "name": "中部電力パワーグリッド",
+      "url": "https://teiden.powergrid.chuden.co.jp/p/",
+      "count": null,
+      "count_label": null,
+      "status": "error",
+      "error": "初回の自動取得待ち"
+    },
+    {
+      "code": "rikuden",
+      "name": "北陸電力送配電",
+      "url": "https://www.rikuden.co.jp/nw/teiden/otj010.html",
+      "count": null,
+      "count_label": null,
+      "status": "error",
+      "error": "初回の自動取得待ち"
+    },
+    {
+      "code": "kepco",
+      "name": "関西電力送配電",
+      "url": "https://www.kansai-td.co.jp/teiden-info/",
+      "count": null,
+      "count_label": null,
+      "status": "error",
+      "error": "初回の自動取得待ち"
+    },
+    {
+      "code": "energia",
+      "name": "中国電力ネットワーク",
+      "url": "https://www.teideninfo.energia.co.jp/",
+      "count": null,
+      "count_label": null,
+      "status": "error",
+      "error": "初回の自動取得待ち"
+    },
+    {
+      "code": "yonden",
+      "name": "四国電力送配電",
+      "url": "https://www.yonden.co.jp/nw/teiden-info/",
+      "count": null,
+      "count_label": null,
+      "status": "error",
+      "error": "初回の自動取得待ち"
+    },
+    {
+      "code": "kyuden",
+      "name": "九州電力送配電",
+      "url": "https://www.kyuden.co.jp/td_teiden/kyushu.html",
+      "count": null,
+      "count_label": null,
+      "status": "error",
+      "error": "初回の自動取得待ち"
+    },
+    {
+      "code": "okiden",
+      "name": "沖縄電力",
+      "url": "https://www.okidenmail.jp/bosai/info/",
+      "count": null,
+      "count_label": null,
+      "status": "error",
+      "error": "初回の自動取得待ち"
+    }
+  ]
+}
