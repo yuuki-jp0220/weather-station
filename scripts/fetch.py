@@ -19,16 +19,16 @@ from bs4 import BeautifulSoup
 
 JST = timezone(timedelta(hours=9), "JST")
 OUTPUT_PATH = Path("docs/data.json")
-TIMEOUT = 20
+TIMEOUT = 8
 
 def create_session():
     session = requests.Session()
     retry = Retry(
-        total=3,
-        connect=3,
-        read=2,
+        total=1,
+        connect=1,
+        read=1,
         status=3,
-        backoff_factor=1.5,
+        backoff_factor=0.3,
         status_forcelist=(429, 500, 502, 503, 504),
         allowed_methods=frozenset(["GET"]),
         respect_retry_after_header=True,
@@ -173,7 +173,7 @@ def main():
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     previous = load_previous_data()
     results = [None] * len(COMPANIES)
-    with ThreadPoolExecutor(max_workers=4) as executor:
+    with ThreadPoolExecutor(max_workers=10) as executor:
         futures = {executor.submit(fetch_company, company, previous): index for index, company in enumerate(COMPANIES)}
         for future in as_completed(futures):
             results[futures[future]] = future.result()
