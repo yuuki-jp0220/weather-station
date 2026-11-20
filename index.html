@@ -173,7 +173,8 @@ async function loadOutageData(){
    $('outage-provider-result').textContent='公式ページの表示：'+(item.count_label||'概数')+'。正確な件数ではないため、全国合計には加算していません。';
   }else{
    $('outage-live-state').textContent='取得失敗';
-   $('outage-provider-result').textContent='公式ページから正確な全エリア合計を確認できませんでした。'+(item.error?' 詳細：'+item.error:'')+' 停電なしとは判定できません。';
+   const stale=item.last_success_count!==null&&item.last_success_count!==undefined?' 前回成功値：'+Number(item.last_success_count).toLocaleString('ja-JP')+'件（現在値ではありません）。':'';
+   $('outage-provider-result').textContent='取得失敗。'+stale+(item.error?' 詳細：'+item.error:'')+' 停電なしとは判定できません。';
   }
   $('outage-provider-status').textContent='最終更新：'+(data.updated_at||'未実行')+' ／ 全国10社中 '+(data.successful_companies??0)+'社の取得成功。全国合計：'+(data.total_count===null||data.total_count===undefined?'未確定':Number(data.total_count).toLocaleString('ja-JP')+'件');
  }catch(e){
