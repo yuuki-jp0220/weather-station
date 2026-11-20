@@ -159,7 +159,7 @@ function changePage(p){
  document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===p));
  if(p==='radar'){initMap().then(()=>{if(map)setTimeout(()=>map.invalidateSize(),100)})}
  if(p==='lifeline')loadOutageData();
- if(p==='disaster'||p==='typhoon')refreshFeeds();
+ if(p==='disaster'||p==='typhoon')window.refreshJMAFeeds?.();
 }
 document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>changePage(b.dataset.page));document.querySelectorAll('[data-layer]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-layer]').forEach(x=>x.classList.toggle('active',x===b));setRadar(b.dataset.layer)});
 
@@ -302,6 +302,7 @@ $('tepco-outage-test')?.addEventListener('click',testTepcoOutageConnection);$('r
   }
   if(status)status.textContent="● 一覧取得完了 · "+new Date().toLocaleTimeString("ja-JP")+"（詳細は順次表示）";
  }
+ window.refreshJMAFeeds=refreshFeeds;
  setInterval(()=>{if(document.visibilityState==='visible'&&(document.getElementById('disaster')?.classList.contains('active')||document.getElementById('typhoon')?.classList.contains('active')))refreshFeeds()},5*60*1000);
 })();
 </script>
