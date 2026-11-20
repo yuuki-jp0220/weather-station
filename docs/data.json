@@ -1,19 +1,21 @@
 {
-  "updated_at": null,
+  "updated_at": "2026-11-21T04:36:54+09:00",
   "total_count": null,
-  "total_status": "not_run",
-  "successful_companies": 0,
+  "total_status": "incomplete",
+  "successful_companies": 1,
   "company_count": 10,
-  "note": "自動取得の初回実行前です。未取得は停電0件を意味しません。",
   "companies": [
     {
       "code": "hepco",
       "name": "北海道電力ネットワーク",
       "url": "https://teiden-info.hepco.co.jp/",
-      "count": null,
-      "count_label": null,
-      "status": "error",
-      "error": "初回の自動取得待ち"
+      "count": 0,
+      "count_label": "0",
+      "status": "ok",
+      "fetched_at": "2026-11-21T04:36:52+09:00",
+      "error": null,
+      "evidence": "explicit_no_outage",
+      "last_success_count": 0
     },
     {
       "code": "tohoku",
@@ -22,7 +24,10 @@
       "count": null,
       "count_label": null,
       "status": "error",
-      "error": "初回の自動取得待ち"
+      "fetched_at": "2026-11-21T04:36:52+09:00",
+      "error": "ValueError: 明確な全エリア合計を確認できません（動的表示・ページ仕様変更の可能性）",
+      "evidence": null,
+      "last_success_count": null
     },
     {
       "code": "tepco",
@@ -31,7 +36,10 @@
       "count": null,
       "count_label": null,
       "status": "error",
-      "error": "初回の自動取得待ち"
+      "fetched_at": "2026-11-21T04:36:52+09:00",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://teideninfo.tepco.co.jp/",
+      "evidence": null,
+      "last_success_count": null
     },
     {
       "code": "chuden",
@@ -40,7 +48,10 @@
       "count": null,
       "count_label": null,
       "status": "error",
-      "error": "初回の自動取得待ち"
+      "fetched_at": "2026-11-21T04:36:52+09:00",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://teiden.powergrid.chuden.co.jp/p/",
+      "evidence": null,
+      "last_success_count": null
     },
     {
       "code": "rikuden",
@@ -49,7 +60,10 @@
       "count": null,
       "count_label": null,
       "status": "error",
-      "error": "初回の自動取得待ち"
+      "fetched_at": "2026-11-21T04:36:52+09:00",
+      "error": "ValueError: 明確な全エリア合計を確認できません（動的表示・ページ仕様変更の可能性）",
+      "evidence": null,
+      "last_success_count": null
     },
     {
       "code": "kepco",
@@ -58,16 +72,22 @@
       "count": null,
       "count_label": null,
       "status": "error",
-      "error": "初回の自動取得待ち"
+      "fetched_at": "2026-11-21T04:36:52+09:00",
+      "error": "RetryError: HTTPSConnectionPool(host='www.kansai-td.co.jp', port=443): Max retries exceeded with url: /teiden-info/index.php (Caused by ResponseError('too many 503 error responses'))",
+      "evidence": null,
+      "last_success_count": null
     },
     {
       "code": "energia",
       "name": "中国電力ネットワーク",
       "url": "https://www.teideninfo.energia.co.jp/",
       "count": null,
-      "count_label": null,
-      "status": "error",
-      "error": "初回の自動取得待ち"
+      "count_label": "100戸未満",
+      "status": "approximate",
+      "fetched_at": "2026-11-21T04:36:52+09:00",
+      "error": "公式表示が概数のため、正確な件数として扱っていません",
+      "evidence": "approximate",
+      "last_success_count": null
     },
     {
       "code": "yonden",
@@ -76,7 +96,10 @@
       "count": null,
       "count_label": null,
       "status": "error",
-      "error": "初回の自動取得待ち"
+      "fetched_at": "2026-11-21T04:36:52+09:00",
+      "error": "ValueError: 明確な全エリア合計を確認できません（動的表示・ページ仕様変更の可能性）",
+      "evidence": null,
+      "last_success_count": null
     },
     {
       "code": "kyuden",
@@ -85,7 +108,10 @@
       "count": null,
       "count_label": null,
       "status": "error",
-      "error": "初回の自動取得待ち"
+      "fetched_at": "2026-11-21T04:36:52+09:00",
+      "error": "ValueError: 明確な全エリア合計を確認できません（動的表示・ページ仕様変更の可能性）",
+      "evidence": null,
+      "last_success_count": null
     },
     {
       "code": "okiden",
@@ -94,7 +120,11 @@
       "count": null,
       "count_label": null,
       "status": "error",
-      "error": "初回の自動取得待ち"
+      "fetched_at": "2026-11-21T04:36:52+09:00",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.okidenmail.jp/bosai/info/",
+      "evidence": null,
+      "last_success_count": null
     }
-  ]
+  ],
+  "note": "全国合計は10社すべての正確な件数を取得できた場合のみ表示。取得失敗・概数は0として扱いません。"
 }
