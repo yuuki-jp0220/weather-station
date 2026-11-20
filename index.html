@@ -92,13 +92,37 @@ $('region').onchange=()=>{const c=coords[$('region').value];if(c){location=c;loa
  const radar=document.getElementById("radar");
  if(radar){const tiles=radar.querySelector(".tiles");if(tiles)tiles.innerHTML='<div class="jma-info"><b>雨雲・雨雪</b><small>RainViewerの公開降水タイルを地図上に表示中。気象庁レーダーは直接タイル化できる公開仕様を確認後に追加。</small></div><div class="jma-info"><b>風</b><small>Open-Meteoの地点別風速・風向・予報を取得。面レーダーは未実装。</small></div><div class="jma-info"><b>積雪</b><small>Open-Meteoの降雪予報データを取得。全国積雪観測レイヤーは未実装。</small></div><div class="jma-info"><b>雷・黄砂・ゲリラ雷雨</b><small>全国を覆う無料の統一リアルタイムAPIを確認できていないため、未取得の情報は表示しません。</small></div>';}
  async function refreshFeeds(){
-  const status=document.getElementById("jma-feed-status");if(status)status.textContent="● 気象庁XMLを取得中…";
+  const status=document.getElementById("jma-feed-status");
+  if(status)status.textContent="● 最新発表を確認中…";
+  // まずフィード一覧を同時取得し、見出しを先に表示する
+  const results=await Promise.all(FEEDS.map(async f=>{
+   try{return {feed:f,entries:await getEntries(f),error:null}}
+   catch(e){return {feed:f,entries:[],error:e}}
+  }));
   const all=[];
-  for(const f of FEEDS){const target=document.getElementById("jma-"+f.key);try{const entries=await getEntries(f);const detailed=await Promise.all(entries.slice(0,5).map(enrich));all.push(...detailed);if(target)target.innerHTML=detailed.length?detailed.map(card).join(""):'<div class="jma-empty">現在、掲載中の電文はありません。</div>';}catch(e){if(target)target.innerHTML='<div class="jma-empty">直接取得できませんでした：'+esc2(e.message)+'。ブラウザーのCORS制限の可能性があります。</div>';}}
-  const ty=document.getElementById("jma-typhoon");if(ty){const hits=all.filter(x=>/台風|熱帯低気圧|暴風|大雨|暴風雪/.test(x.title));ty.innerHTML=hits.length?hits.map(card).join(""):'<div class="jma-empty">現在の取得範囲に台風関連の発表は見つかりませんでした。これは「台風なし」の確定判定ではありません。</div>';}
-  if(status)status.textContent="● 取得処理終了 · "+new Date().toLocaleTimeString("ja-JP");
+  for(const result of results){
+   const target=document.getElementById("jma-"+result.feed.key);
+   if(result.error){
+    if(target)target.innerHTML='<div class="jma-empty">取得できません：'+esc2(result.error.message)+'（通信制限の可能性）</div>';
+    continue;
+   }
+   const entries=result.entries.slice(0,5).map(x=>({...x,bits:[],detailPending:true}));
+   all.push(...entries);
+   if(target)target.innerHTML=entries.length?entries.map(card).join(""):'<div class="jma-empty">現在、掲載中の電文はありません。</div>';
+   // 詳細電文は最新2件だけを後から並行取得し、一覧表示を待たせない
+   Promise.all(entries.slice(0,2).map(enrich)).then(details=>{
+    details.forEach((item,i)=>{entries[i]=item});
+    if(target)target.innerHTML=entries.map(card).join("");
+   });
+  }
+  const ty=document.getElementById("jma-typhoon");
+  if(ty){
+   const hits=all.filter(x=>/台風|熱帯低気圧|暴風|大雨|暴風雪/.test(x.title));
+   ty.innerHTML=hits.length?hits.map(card).join(""):'<div class="jma-empty">現在の取得範囲に台風関連の発表はありません。これは「台風なし」の確定判定ではありません。</div>';
+  }
+  if(status)status.textContent="● 一覧取得完了 · "+new Date().toLocaleTimeString("ja-JP")+"（詳細は順次表示）";
  }
- refreshFeeds();setInterval(refreshFeeds,3*60*1000);
+ refreshFeeds();setInterval(refreshFeeds,5*60*1000);
 })();
 </script>
 </body></html>
