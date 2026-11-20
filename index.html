@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#061522">
 <title>WEATHER STATION | NATIONAL METEOROLOGICAL SYSTEM</title>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<!-- Leaflet CSS is loaded only when the radar tab is opened. -->
 <style>
 :root{--bg:#061522;--panel:#0c2232;--panel2:#102b3d;--line:#234457;--txt:#e8f4fa;--muted:#91adbd;--cyan:#5dd9ed;--green:#62dfad;--amber:#ffd16a;--red:#ff7373}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--txt);font:14px/1.55 system-ui,"Noto Sans JP",sans-serif}button,select{font:inherit;color:inherit;background:#123146;border:1px solid #31566d;border-radius:6px;padding:9px 11px}button{cursor:pointer}button:hover,.nav button.active{border-color:var(--cyan);background:#16465b}.top{position:sticky;top:0;z-index:500;background:#081c2b;border-bottom:1px solid var(--line);padding:12px 15px;display:flex;justify-content:space-between;align-items:center;gap:12px}.brand{font-weight:800;letter-spacing:2px;font-size:18px}.brand b{color:var(--cyan)}.subtitle{font-size:9px;color:var(--muted);letter-spacing:1.6px}.status{font-size:11px;color:var(--green)}.shell{max-width:1500px;margin:auto;padding:12px;padding-bottom:96px}.toolbar,.nav{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px}.toolbar select{max-width:100%}.nav{position:fixed;left:0;right:0;bottom:0;z-index:1000;max-width:1500px;margin:0 auto;padding:9px 10px calc(9px + env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;background:rgba(5,20,32,.97);border-top:1px solid #31566d;border-bottom:0;box-shadow:0 -8px 24px #0008;backdrop-filter:blur(12px)}.nav button{min-width:0;padding:9px 3px;font-size:11px;white-space:nowrap;border-radius:8px}.nav button.active{background:#14516a;color:#fff;box-shadow:inset 0 0 0 1px var(--cyan)}.nav button{font-size:12px}.page{display:none}.page.active{display:block}.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:10px}.card{background:var(--panel);border:1px solid var(--line);border-radius:9px;overflow:hidden;min-width:0}.span12{grid-column:span 12}.span8{grid-column:span 8}.span7{grid-column:span 7}.span6{grid-column:span 6}.span5{grid-column:span 5}.span4{grid-column:span 4}.hd{padding:9px 12px;border-bottom:1px solid var(--line);font-size:11px;letter-spacing:1px;color:#c6dce8;display:flex;justify-content:space-between;gap:8px}.body{padding:13px}.hero{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:150px}.place{color:var(--muted);font-size:12px}.temp{font-size:54px;line-height:1.1;color:var(--cyan);font-weight:700}.bigicon{font-size:54px}.muted{color:var(--muted)}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:10px}.stat{background:#081b29;padding:9px;border-radius:6px}.stat small{display:block;color:var(--muted);font-size:10px}.stat strong{font-size:17px}.hourly{display:flex;gap:7px;overflow-x:auto;padding:12px}.hour{flex:0 0 82px;background:#081b29;border:1px solid #1d3b4e;border-radius:7px;text-align:center;padding:8px 4px}.hour strong{display:block;font-size:16px}.daily{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;padding:10px}.day{background:#081b29;border-radius:7px;padding:9px 4px;text-align:center;min-width:0}.day small{color:var(--muted)}.day .ico{font-size:22px;margin:5px}.day .range{font-size:12px}.day .rain{font-size:10px;color:var(--cyan)}#map{height:65vh;min-height:340px;background:#0b2435}.maptools{display:flex;gap:6px;flex-wrap:wrap;padding:10px}.mapnote{font-size:11px;color:var(--muted);padding:0 12px 12px}.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.tile{background:#0a1c2a;border:1px solid var(--line);border-radius:8px;padding:12px;text-decoration:none;color:var(--txt);display:block}.tile b{display:block;margin-bottom:4px}.tile small{color:var(--muted)}.feed{padding:12px;color:var(--muted)}.alert{border-left:3px solid var(--amber);padding:9px;background:#172b35;margin:7px 0}.foot{font-size:10px;color:var(--muted);padding:15px 2px}.error{color:var(--amber)}.pill{font-size:10px;color:var(--green);border:1px solid #27634e;padding:2px 6px;border-radius:20px}.loading{color:var(--muted);padding:15px}.source{color:var(--cyan);text-decoration:none}.source:hover{text-decoration:underline}
 @media(max-width:850px){.span8,.span7,.span6,.span5,.span4{grid-column:span 12}.tiles{grid-template-columns:repeat(2,1fr)}.stats{grid-template-columns:repeat(2,1fr)}}@media(max-width:520px){.nav{gap:4px;padding-left:6px;padding-right:6px}.nav button{font-size:10px;padding:9px 1px}.shell{padding-bottom:88px}.top{align-items:flex-start;flex-direction:column}.daily{grid-template-columns:repeat(2,1fr)}.temp{font-size:46px}.tiles{grid-template-columns:1fr 1fr}#map{height:58vh}}
@@ -71,7 +71,7 @@
 </div></section>
 <div class="foot">Weather data by <a class="source" href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> · Japan forecast and disaster references by <a class="source" href="https://www.jma.go.jp/" target="_blank" rel="noopener">Japan Meteorological Agency</a>. Open-Meteo free API is for non-commercial use; attribution required. Radar tiles by RainViewer. This is an independent information dashboard, not an official warning service.</div>
 </main>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<!-- Leaflet JS is loaded only when the radar tab is opened. -->
 <script>
 const $=id=>document.getElementById(id);const coords={'010000':[43.06,141.35],'020000':[40.82,140.74],'030000':[39.70,141.15],'040000':[38.27,140.87],'050000':[39.72,140.10],'060000':[38.24,140.36],'070000':[37.75,140.47],'080000':[36.34,140.45],'090000':[36.57,139.88],'100000':[36.39,139.06],'110000':[35.86,139.65],'120000':[35.61,140.12],'130000':[35.68,139.69],'140000':[35.45,139.64],'150000':[37.90,139.02],'160000':[36.70,137.21],'170000':[36.56,136.66],'180000':[36.06,136.22],'190000':[35.66,138.57],'200000':[36.65,138.18],'210000':[35.42,136.76],'220000':[34.98,138.38],'230000':[35.18,136.91],'240000':[34.73,136.51],'250000':[35.00,135.87],'260000':[35.02,135.76],'270000':[34.69,135.50],'280000':[34.69,135.20],'290000':[34.69,135.83],'300000':[34.23,135.17],'310000':[35.50,134.24],'320000':[35.47,133.05],'330000':[34.66,133.93],'340000':[34.40,132.46],'350000':[34.19,131.47],'360000':[34.07,134.56],'370000':[34.34,134.04],'380000':[33.84,132.77],'390000':[33.56,133.53],'400000':[33.59,130.40],'410000':[33.25,130.30],'420000':[32.75,129.88],'430000':[32.79,130.74],'440000':[33.24,131.61],'450000':[31.91,131.42],'460000':[31.56,130.56],'470000':[26.21,127.68]};let map,radarLayer,radarFrames=[],marker,location=[36.34,140.45],currentLayer='rain';
 function esc(v){return String(v??'--').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}function weatherIcon(code){if(code===0)return'☀️';if([1,2].includes(code))return'🌤️';if(code===3)return'☁️';if([45,48].includes(code))return'🌫️';if([51,53,55,56,57].includes(code))return'🌦️';if([61,63,65,66,67,80,81,82].includes(code))return'🌧️';if([71,73,75,77,85,86].includes(code))return'❄️';if([95,96,99].includes(code))return'⛈️';return'🌡️'}function weatherText(code){if(code===0)return'快晴';if([1,2].includes(code))return'晴れ時々くもり';if(code===3)return'くもり';if([45,48].includes(code))return'霧';if([51,53,55,56,57].includes(code))return'霧雨';if([61,63,65,66,67,80,81,82].includes(code))return'雨';if([71,73,75,77,85,86].includes(code))return'雪';if([95,96,99].includes(code))return'雷雨';return'不明'}
@@ -83,8 +83,8 @@ async function loadJMA(){
  const code=$('region').value, regionName=$('region').selectedOptions[0].text;
  try{
   const [forecastRes,overviewRes]=await Promise.all([
-   fetch('https://www.jma.go.jp/bosai/forecast/data/forecast/'+code+'.json',{cache:'no-store'}),
-   fetch('https://www.jma.go.jp/bosai/forecast/data/overview_forecast/'+code+'.json',{cache:'no-store'})
+   fetch('https://www.jma.go.jp/bosai/forecast/data/forecast/'+code+'.json',{cache:'default'}),
+   fetch('https://www.jma.go.jp/bosai/forecast/data/overview_forecast/'+code+'.json',{cache:'default'})
   ]);
   if(!forecastRes.ok)throw Error('予報JSON HTTP '+forecastRes.status);
   const j=await forecastRes.json(),o=overviewRes.ok?await overviewRes.json():{};
@@ -113,7 +113,24 @@ async function loadJMA(){
   $('regional').innerHTML='<span class="error">気象庁データを取得できません。通信環境を確認してください。</span>';
  }
 }
-async function initMap(){if(!window.L)return;map=L.map('map').setView(location,5);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'© OpenStreetMap'}).addTo(map);marker=L.marker(location).addTo(map).bindPopup('選択地点');await setRadar('rain');}
+async function ensureLeaflet(){
+ if(window.L)return;
+ if(!document.getElementById('leaflet-css')){
+  const css=document.createElement('link');css.id='leaflet-css';css.rel='stylesheet';css.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';document.head.appendChild(css);
+ }
+ await new Promise((resolve,reject)=>{
+  const script=document.createElement('script');script.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';script.onload=resolve;script.onerror=()=>reject(new Error('地図ライブラリを読み込めません'));
+  document.head.appendChild(script);
+ });
+}
+async function initMap(){
+ if(map)return;
+ try{await ensureLeaflet()}catch(e){$('mapnote').textContent=e.message;return}
+ map=L.map('map').setView(location,5);
+ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'© OpenStreetMap'}).addTo(map);
+ marker=L.marker(location).addTo(map).bindPopup('選択地点');
+ await setRadar('rain');
+}
 async function setRadar(type){currentLayer=type;if(!map)return;if(radarLayer){map.removeLayer(radarLayer);radarLayer=null}if(type==='jma'){$('mapnote').textContent='気象庁の公式降水ナウキャストを別ページで開いてください。';window.open('https://www.jma.go.jp/bosai/nowc/','_blank','noopener');return}if(type==='wind'){$('mapnote').textContent='風の数値予報は地点ごとの予報パネルに表示します。風の公式分布図は気象庁の情報をご確認ください。';return}try{const r=await fetch('https://api.rainviewer.com/public/weather-maps.json');if(!r.ok)throw Error('Radar feed unavailable');const j=await r.json();const frames=[...(j.radar?.past||[]),...(j.radar?.nowcast||[])];const f=frames[frames.length-1];if(!f)throw Error('No radar frame');radarLayer=L.tileLayer(j.host+f.path+'/256/{z}/{x}/{y}/2/1_1.png',{opacity:.65,tileSize:256,attribution:'Radar © RainViewer',maxZoom:7});radarLayer.addTo(map);$('mapnote').textContent='RainViewer 世界の降水レーダー · '+new Date(f.time*1000).toLocaleString('ja-JP')+' · 地図の表示範囲を移動・拡大できます。'}catch(e){$('mapnote').textContent='レーダータイルを取得できませんでした。気象庁の公式降水ナウキャストを利用してください。';}}
 async function testTepcoOutageConnection(){
  const status=$('tepco-outage-status'),result=$('tepco-outage-result'),button=$('tepco-outage-test');
@@ -137,7 +154,13 @@ async function testTepcoOutageConnection(){
   result.textContent=(e.name==='AbortError'?'接続がタイムアウトしました。':'公式ページを直接取得できませんでした（'+e.message+'）。')+' GitHub PagesからのCORS制限などが考えられます。現時点では停電なしとは判定できません。公式ページを別画面で確認してください。';
  }finally{button.disabled=false;button.textContent='もう一度テスト';}
 }
-function changePage(p){document.querySelectorAll('.page').forEach(x=>x.classList.toggle('active',x.id===p));document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===p));if(p==='radar'&&map)setTimeout(()=>map.invalidateSize(),100)}
+function changePage(p){
+ document.querySelectorAll('.page').forEach(x=>x.classList.toggle('active',x.id===p));
+ document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===p));
+ if(p==='radar'){initMap().then(()=>{if(map)setTimeout(()=>map.invalidateSize(),100)})}
+ if(p==='lifeline')loadOutageData();
+ if(p==='disaster'||p==='typhoon')refreshFeeds();
+}
 document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>changePage(b.dataset.page));document.querySelectorAll('[data-layer]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-layer]').forEach(x=>x.classList.toggle('active',x===b));setRadar(b.dataset.layer)});
 
 // 送配電事業者セレクター：公式情報の案内を切り替える（外部ページ埋め込みなし）
@@ -160,7 +183,7 @@ async function loadOutageData(){
  $('outage-data-mode').textContent='自動取得（15分間隔）';
  $('outage-live-state').textContent='確認中…';
  try{
-  const response=await fetch('./docs/data.json?t='+Date.now(),{cache:'no-store'});
+  const response=await fetch('./docs/data.json',{cache:'default'});
   if(!response.ok)throw Error('HTTP '+response.status);
   const data=await response.json();
   const item=(data.companies||[]).find(x=>x.code===code);
@@ -193,13 +216,13 @@ function updateOutageProvider(){
  $('outage-provider-result').textContent='現在、この事業者の一般公開JSON/XML APIをこのページから取得する処理は未確認です。公式情報へのリンクを案内しています。数値は未取得のため表示していません。';
  $('outage-official-link').href=p.url;
  $('outage-official-link').textContent=(id==='tepco'?'東京電力公式 停電情報':'各社公式 停電情報の案内')+' ↗';
- loadOutageData();
+ if($('lifeline')?.classList.contains('active'))loadOutageData();
 }
 $('outage-provider')?.addEventListener('change',updateOutageProvider);
 $('outage-prefecture')?.addEventListener('change',updateOutageProvider);
 updateOutageProvider();
 
-$('tepco-outage-test')?.addEventListener('click',testTepcoOutageConnection);$('region').onchange=()=>{const c=coords[$('region').value];if(c){location=c;loadWeather(...c);if(map){map.setView(c,7);marker.setLatLng(c)}}loadJMA()};$('refresh').onclick=()=>{loadWeather(...location);loadJMA()};$('locate').onclick=()=>{if(!navigator.geolocation){alert('このブラウザーでは位置情報を利用できません');return}navigator.geolocation.getCurrentPosition(p=>{location=[p.coords.latitude,p.coords.longitude];loadWeather(...location);if(map){map.setView(location,9);marker.setLatLng(location).bindPopup('現在地').openPopup()}},()=>alert('位置情報を取得できません。ブラウザーの位置情報許可を確認してください。'),{enableHighAccuracy:false,timeout:12000})};$('maploc').onclick=()=>{if(map)map.setView(location,8)};$('fullscreen').onclick=()=>document.fullscreenElement?document.exitFullscreen?.():document.documentElement.requestFullscreen?.();initMap();loadWeather();loadJMA();setInterval(()=>{loadWeather(...location);loadJMA()},30*60*1000);
+$('tepco-outage-test')?.addEventListener('click',testTepcoOutageConnection);$('region').onchange=()=>{const c=coords[$('region').value];if(c){location=c;loadWeather(...c);if(map){map.setView(c,7);marker.setLatLng(c)}}loadJMA()};$('refresh').onclick=()=>{loadWeather(...location);loadJMA()};$('locate').onclick=()=>{if(!navigator.geolocation){alert('このブラウザーでは位置情報を利用できません');return}navigator.geolocation.getCurrentPosition(p=>{location=[p.coords.latitude,p.coords.longitude];loadWeather(...location);if(map){map.setView(location,9);marker.setLatLng(location).bindPopup('現在地').openPopup()}},()=>alert('位置情報を取得できません。ブラウザーの位置情報許可を確認してください。'),{enableHighAccuracy:false,timeout:12000})};$('maploc').onclick=()=>{if(map)map.setView(location,8)};$('fullscreen').onclick=()=>document.fullscreenElement?document.exitFullscreen?.():document.documentElement.requestFullscreen?.();loadWeather();loadJMA();setInterval(()=>{if(document.visibilityState==='visible'){loadWeather(...location);loadJMA()}},30*60*1000);
 </script>
 
 <script>
@@ -279,7 +302,7 @@ $('tepco-outage-test')?.addEventListener('click',testTepcoOutageConnection);$('r
   }
   if(status)status.textContent="● 一覧取得完了 · "+new Date().toLocaleTimeString("ja-JP")+"（詳細は順次表示）";
  }
- refreshFeeds();setInterval(refreshFeeds,5*60*1000);
+ setInterval(()=>{if(document.visibilityState==='visible'&&(document.getElementById('disaster')?.classList.contains('active')||document.getElementById('typhoon')?.classList.contains('active')))refreshFeeds()},5*60*1000);
 })();
 </script>
 </body></html>
