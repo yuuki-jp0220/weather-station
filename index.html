@@ -142,17 +142,46 @@ document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>changePage(b.d
 
 // 送配電事業者セレクター：公式情報の案内を切り替える（外部ページ埋め込みなし）
 const outageProviders={
- hokkaido:{name:'北海道電力ネットワーク',short:'北海道NW',area:'北海道',url:'https://www.tdgc.jp/areainfo/teiden/'},
- tohoku:{name:'東北電力ネットワーク',short:'東北NW',area:'青森・岩手・宮城・秋田・山形・福島・新潟',url:'https://www.tdgc.jp/areainfo/teiden/'},
+ hokkaido:{name:'北海道電力ネットワーク',short:'北海道NW',area:'北海道',url:'https://teiden-info.hepco.co.jp/'},
+ tohoku:{name:'東北電力ネットワーク',short:'東北NW',area:'青森・岩手・宮城・秋田・山形・福島・新潟',url:'https://nw.tohoku-epco.co.jp/teideninfo/evhindex.html'},
  tepco:{name:'東京電力パワーグリッド',short:'東京電力PG',area:'茨城・栃木・群馬・埼玉・千葉・東京・神奈川・山梨・静岡',url:'https://teideninfo.tepco.co.jp/'},
- chubu:{name:'中部電力パワーグリッド',short:'中部PG',area:'長野・岐阜・静岡・愛知・三重',url:'https://www.tdgc.jp/areainfo/teiden/'},
- hokuriku:{name:'北陸電力送配電',short:'北陸送配電',area:'富山・石川・福井',url:'https://www.tdgc.jp/areainfo/teiden/'},
- kansai:{name:'関西電力送配電',short:'関西送配電',area:'滋賀・京都・大阪・兵庫・奈良・和歌山',url:'https://www.tdgc.jp/areainfo/teiden/'},
- chugoku:{name:'中国電力ネットワーク',short:'中国NW',area:'鳥取・島根・岡山・広島・山口',url:'https://www.tdgc.jp/areainfo/teiden/'},
- shikoku:{name:'四国電力送配電',short:'四国送配電',area:'徳島・香川・愛媛・高知',url:'https://www.tdgc.jp/areainfo/teiden/'},
- kyushu:{name:'九州電力送配電',short:'九州送配電',area:'福岡・佐賀・長崎・熊本・大分・宮崎・鹿児島',url:'https://www.tdgc.jp/areainfo/teiden/'},
- okinawa:{name:'沖縄電力',short:'沖縄電力',area:'沖縄',url:'https://www.tdgc.jp/areainfo/teiden/'}
+ chubu:{name:'中部電力パワーグリッド',short:'中部PG',area:'長野・岐阜・静岡・愛知・三重',url:'https://teiden.powergrid.chuden.co.jp/p/'},
+ hokuriku:{name:'北陸電力送配電',short:'北陸送配電',area:'富山・石川・福井',url:'https://www.rikuden.co.jp/nw/teiden/otj010.html'},
+ kansai:{name:'関西電力送配電',short:'関西送配電',area:'滋賀・京都・大阪・兵庫・奈良・和歌山',url:'https://www.kansai-td.co.jp/teiden-info/'},
+ chugoku:{name:'中国電力ネットワーク',short:'中国NW',area:'鳥取・島根・岡山・広島・山口',url:'https://www.teideninfo.energia.co.jp/'},
+ shikoku:{name:'四国電力送配電',short:'四国送配電',area:'徳島・香川・愛媛・高知',url:'https://www.yonden.co.jp/nw/teiden-info/'},
+ kyushu:{name:'九州電力送配電',short:'九州送配電',area:'福岡・佐賀・長崎・熊本・大分・宮崎・鹿児島',url:'https://www.kyuden.co.jp/td_teiden/kyushu.html'},
+ okinawa:{name:'沖縄電力',short:'沖縄電力',area:'沖縄',url:'https://www.okidenmail.jp/bosai/info/'}
 };
+async function loadOutageData(){
+ const codeMap={hokkaido:'hepco',tohoku:'tohoku',tepco:'tepco',chubu:'chuden',hokuriku:'rikuden',kansai:'kepco',chugoku:'energia',shikoku:'yonden',kyushu:'kyuden',okinawa:'okiden'};
+ const selected=$('outage-provider')?.value||'tepco';
+ const code=codeMap[selected];
+ $('outage-data-mode').textContent='自動取得（15分間隔）';
+ $('outage-live-state').textContent='確認中…';
+ try{
+  const response=await fetch('./docs/data.json?t='+Date.now(),{cache:'no-store'});
+  if(!response.ok)throw Error('HTTP '+response.status);
+  const data=await response.json();
+  const item=(data.companies||[]).find(x=>x.code===code);
+  if(!item)throw Error('選択した会社のデータがありません');
+  if(item.status==='ok'&&Number.isFinite(Number(item.count))){
+   $('outage-live-state').textContent='取得成功';
+   $('outage-provider-result').textContent='公式ページから確認した停電件数：'+Number(item.count).toLocaleString('ja-JP')+'（'+(item.count_label||'件')+'）';
+  }else if(item.status==='approximate'){
+   $('outage-live-state').textContent='概数のみ';
+   $('outage-provider-result').textContent='公式ページの表示：'+(item.count_label||'概数')+'。正確な件数ではないため、全国合計には加算していません。';
+  }else{
+   $('outage-live-state').textContent='取得失敗';
+   $('outage-provider-result').textContent='公式ページから正確な全エリア合計を確認できませんでした。'+(item.error?' 詳細：'+item.error:'')+' 停電なしとは判定できません。';
+  }
+  $('outage-provider-status').textContent='最終更新：'+(data.updated_at||'未実行')+' ／ 全国10社中 '+(data.successful_companies??0)+'社の取得成功。全国合計：'+(data.total_count===null||data.total_count===undefined?'未確定':Number(data.total_count).toLocaleString('ja-JP')+'件');
+ }catch(e){
+  $('outage-live-state').textContent='JSON取得失敗';
+  $('outage-provider-status').textContent='停電情報JSONを取得できません：'+e.message;
+  $('outage-provider-result').textContent='GitHub Actionsの初回実行後に再読み込みしてください。データ未取得を停電0件とは判定しません。';
+ }
+}
 function updateOutageProvider(){
  const id=$('outage-provider')?.value||'tepco',p=outageProviders[id];if(!p)return;
  const pref=$('outage-prefecture')?.value||'茨城県';
@@ -163,6 +192,7 @@ function updateOutageProvider(){
  $('outage-provider-result').textContent='現在、この事業者の一般公開JSON/XML APIをこのページから取得する処理は未確認です。公式情報へのリンクを案内しています。数値は未取得のため表示していません。';
  $('outage-official-link').href=p.url;
  $('outage-official-link').textContent=(id==='tepco'?'東京電力公式 停電情報':'各社公式 停電情報の案内')+' ↗';
+ loadOutageData();
 }
 $('outage-provider')?.addEventListener('change',updateOutageProvider);
 $('outage-prefecture')?.addEventListener('change',updateOutageProvider);
