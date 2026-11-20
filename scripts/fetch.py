@@ -50,7 +50,6 @@ def extract_count(text: str) -> tuple[Optional[int], Optional[str], str]:
         "現在停電は発生しておりません",
         "現在、停電はありません",
         "現在停電はありません",
-        "停電は発生しておりません",
     )
     if any(phrase in normalized for phrase in no_outage_phrases):
         return 0, "0", "explicit_no_outage"
@@ -108,7 +107,7 @@ def fetch_company(company: dict) -> dict:
 
         if "xml" in content_type or response.text.lstrip().startswith("<?xml"):
             # XML is parsed as text for conservative label-based total extraction.
-            soup = BeautifulSoup(response.text, "xml")
+            soup = BeautifulSoup(response.text, "html.parser")
             text = soup.get_text(" ", strip=True)
         else:
             soup = BeautifulSoup(response.text, "html.parser")
