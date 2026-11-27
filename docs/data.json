@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-27T23:41:31+09:00",
+  "updated_at": "2026-11-28T07:58:14+09:00",
   "total_count": null,
   "total_status": "incomplete",
   "successful_companies": 3,
@@ -12,7 +12,7 @@
       "count": 0,
       "count_label": "0",
       "status": "ok",
-      "fetched_at": "2026-11-27T23:41:30+09:00",
+      "fetched_at": "2026-11-28T07:58:12+09:00",
       "error": null,
       "evidence": "explicit_no_outage",
       "last_success_count": 0
@@ -24,7 +24,7 @@
       "count": null,
       "count_label": null,
       "status": "error",
-      "fetched_at": "2026-11-27T23:41:30+09:00",
+      "fetched_at": "2026-11-28T07:58:12+09:00",
       "error": "ValueError: 明確な全エリア合計を確認できません（動的表示・ページ仕様変更の可能性）",
       "evidence": null,
       "last_success_count": null
@@ -36,7 +36,7 @@
       "count": null,
       "count_label": null,
       "status": "error",
-      "fetched_at": "2026-11-27T23:41:30+09:00",
+      "fetched_at": "2026-11-28T07:58:12+09:00",
       "error": "HTTPError: 403 Client Error: Forbidden for url: https://teideninfo.tepco.co.jp/",
       "evidence": null,
       "last_success_count": null
@@ -48,7 +48,7 @@
       "count": null,
       "count_label": null,
       "status": "error",
-      "fetched_at": "2026-11-27T23:41:30+09:00",
+      "fetched_at": "2026-11-28T07:58:12+09:00",
       "error": "HTTPError: 403 Client Error: Forbidden for url: https://teiden.powergrid.chuden.co.jp/p/",
       "evidence": null,
       "last_success_count": null
@@ -60,7 +60,7 @@
       "count": 0,
       "count_label": "0",
       "status": "ok",
-      "fetched_at": "2026-11-27T23:41:30+09:00",
+      "fetched_at": "2026-11-28T07:58:12+09:00",
       "error": null,
       "evidence": "explicit_no_outage",
       "last_success_count": 0
@@ -72,7 +72,7 @@
       "count": 0,
       "count_label": "0",
       "status": "ok",
-      "fetched_at": "2026-11-27T23:41:30+09:00",
+      "fetched_at": "2026-11-28T07:58:12+09:00",
       "error": null,
       "evidence": "explicit_no_outage",
       "last_success_count": 0
@@ -82,9 +82,9 @@
       "name": "中国電力ネットワーク",
       "url": "https://www.teideninfo.energia.co.jp/",
       "count": null,
-      "count_label": "約 60 戸",
+      "count_label": "10 戸未満",
       "status": "approximate",
-      "fetched_at": "2026-11-27T23:41:30+09:00",
+      "fetched_at": "2026-11-28T07:58:12+09:00",
       "error": "公式表示が概数のため、正確な件数として扱っていません",
       "evidence": "approximate",
       "last_success_count": null
@@ -94,11 +94,11 @@
       "name": "四国電力送配電",
       "url": "https://www.yonden.co.jp/nw/teiden-info/",
       "count": null,
-      "count_label": "約30戸",
-      "status": "approximate",
-      "fetched_at": "2026-11-27T23:41:30+09:00",
-      "error": "公式表示が概数のため、正確な件数として扱っていません",
-      "evidence": "approximate",
+      "count_label": null,
+      "status": "error",
+      "fetched_at": "2026-11-28T07:58:12+09:00",
+      "error": "ValueError: 明確な全エリア合計を確認できません（動的表示・ページ仕様変更の可能性）",
+      "evidence": null,
       "last_success_count": null
     },
     {
@@ -108,7 +108,7 @@
       "count": null,
       "count_label": null,
       "status": "error",
-      "fetched_at": "2026-11-27T23:41:30+09:00",
+      "fetched_at": "2026-11-28T07:58:12+09:00",
       "error": "ValueError: 明確な全エリア合計を確認できません（動的表示・ページ仕様変更の可能性）",
       "evidence": null,
       "last_success_count": null
@@ -120,7 +120,7 @@
       "count": null,
       "count_label": null,
       "status": "error",
-      "fetched_at": "2026-11-27T23:41:30+09:00",
+      "fetched_at": "2026-11-28T07:58:12+09:00",
       "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.okidenmail.jp/bosai/info/",
       "evidence": null,
       "last_success_count": null
